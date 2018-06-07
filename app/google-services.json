@@ -1,0 +1,142 @@
+{
+  "project_info": {
+    "project_number": "712049541869",
+    "firebase_url": "https://lofytest2.firebaseio.com",
+    "project_id": "lofytest2",
+    "storage_bucket": "lofytest2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712049541869:android:cffe9ac13c2aad67",
+        "android_client_info": {
+          "package_name": "lofy.fpt.edu.vn.capstoneproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "712049541869-eja7mpmeqirv71ega5f7juhcnm3f0dqq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lofy.fpt.edu.vn.capstoneproject",
+            "certificate_hash": "dc70a38aebe2efef2b6939b737422fd4d36c7bdc"
+          }
+        },
+        {
+          "client_id": "712049541869-6bm834asjrhlejgl6hkash0nf4jfusac.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "712049541869-6bm834asjrhlejgl6hkash0nf4jfusac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3XnSVZb7h9gYqHSe2G1XITRkxIrvPrFs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "712049541869-6bm834asjrhlejgl6hkash0nf4jfusac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712049541869:android:953dbe91311b27b4",
+        "android_client_info": {
+          "package_name": "lofy.fpt.edu.vn.mycapstoneprojectver2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "712049541869-6bm834asjrhlejgl6hkash0nf4jfusac.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "712049541869-6bm834asjrhlejgl6hkash0nf4jfusac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3XnSVZb7h9gYqHSe2G1XITRkxIrvPrFs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712049541869:android:22adbdd18820b1e3",
+        "android_client_info": {
+          "package_name": "lofy.fpt.edu.vn.mycapstoneprojectver5"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "712049541869-njeoohc5t0fmei9ou940rjpioq2vnm88.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lofy.fpt.edu.vn.mycapstoneprojectver5",
+            "certificate_hash": "19fce5a8890ee3d5705baea289e80824a30dbc25"
+          }
+        },
+        {
+          "client_id": "712049541869-6bm834asjrhlejgl6hkash0nf4jfusac.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "712049541869-6bm834asjrhlejgl6hkash0nf4jfusac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3XnSVZb7h9gYqHSe2G1XITRkxIrvPrFs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "712049541869-6bm834asjrhlejgl6hkash0nf4jfusac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
