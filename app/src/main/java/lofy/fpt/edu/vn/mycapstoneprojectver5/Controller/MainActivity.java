@@ -110,7 +110,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         mMap.setMyLocationEnabled(true);
-        pushLatLngToFirebase();
+//        pushLatLngToFirebase();
         mMap.setOnMyLocationChangeListener(this);
     }
 
@@ -145,8 +145,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 String des = tvSeach.getText().toString();
                 try {
                     findPath(ori, des);
-                } catch (Exception e) {
-                    Toast.makeText(this, "ERROR: ", Toast.LENGTH_LONG).show();
+                }catch (Exception e){
+                    Toast.makeText(this, "ERROR: " , Toast.LENGTH_LONG).show();
                 }
                 String gDis = "" + (new DecimalFormat("#.##").format((getDistance(getLocationFromAddress
                         (this, ori), getLocationFromAddress(this, des)) / 1000))) + " Km";
@@ -261,8 +261,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         tvSeach = (TextView) findViewById(R.id.tv_main_search);
         btnFindPath = (Button) findViewById(R.id.btn_main_findPath);
         tvSeach.setOnClickListener(this);
-        tvDistance = (TextView) findViewById(R.id.tv_main_distance);
-        tvDuration = (TextView) findViewById(R.id.tv_main_duration);
+        tvDistance =(TextView) findViewById(R.id.tv_main_distance);
+        tvDuration = (TextView)findViewById(R.id.tv_main_duration);
         btnFindPath.setOnClickListener(this);
         btnFindPath.setEnabled(isBtnFindPathVisible);
     }
@@ -312,6 +312,61 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         return myLatLng;
     }
 
+    public void pushLatLngToFirebase() {
+        // Write a message to the database
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference("user");
+        //String keyG=myRef.push().getKey();
+        //keyId = myRef.child(keyG).push().getKey();
+
+        keyId = myRef.push().getKey();
+        User user = new User("Tie", keyId, String.valueOf(getMyLocation().latitude), String.valueOf(getMyLocation().longitude));
+        // DatabaseReference newRef = myRef.child(keyG).child(keyId);
+        DatabaseReference newRef = myRef.child(keyId);
+        newRef.setValue(user);
+    }
+    public void updateLatLngToFirebase(Location location) {
+        // Write a message to the database
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference("user");
+        User user = new User("Tie", keyId, String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+        DatabaseReference newRef = myRef.child(keyId);
+        newRef.setValue(user);
+    }
+    public void getLatLngToMark() {
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        //usersList =null;
+        mFirebaseDatabase.getReference("user").addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                            User value = childSnapshot.getValue(User.class);
+                            if (!value.getKeyId().trim().equals(keyId))
+                                usersList.add(value);
+                        }
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        // markerOptions.visible(false);
+                        for (User us : usersList) {
+                            try {
+                                mMaker.remove();
+
+                            } catch (Exception e) {
+                                e.getMessage();
+                            }
+                            markerOptions.position(new LatLng(Double.parseDouble(us.getLati()), Double.parseDouble(us.getLongti())));
+                            mMaker = mMap.addMarker(markerOptions);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                }
+        );
+    }
+
     // alert request if not gps
     protected void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -348,69 +403,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void pushLatLngToFirebase() {
-        // Write a message to the database
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference("user");
-        //String keyG=myRef.push().getKey();
-        //keyId = myRef.child(keyG).push().getKey();
-
-        keyId = myRef.push().getKey();
-        User user = new User("Tie", keyId, String.valueOf(getMyLocation().latitude), String.valueOf(getMyLocation().longitude));
-        // DatabaseReference newRef = myRef.child(keyG).child(keyId);
-        DatabaseReference newRef = myRef.child(keyId);
-        newRef.setValue(user);
-    }
-
-    public void updateLatLngToFirebase(Location location) {
-        // Write a message to the database
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference("user");
-        User user = new User("Tie", keyId, String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
-        DatabaseReference newRef = myRef.child(keyId);
-        newRef.setValue(user);
-    }
-
-    public void getLatLngToMark() {
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        //usersList =null;
-        mFirebaseDatabase.getReference("user").addValueEventListener(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                            User value = childSnapshot.getValue(User.class);
-                            if (!value.getKeyId().trim().equals(keyId))
-                                usersList.add(value);
-                        }
-                        MarkerOptions markerOptions = new MarkerOptions();
-                        // markerOptions.visible(false);
-                        for (User us : usersList) {
-                            try {
-                                mMaker.remove();
-
-                            } catch (Exception e) {
-                                e.getMessage();
-                            }
-                            markerOptions.position(new LatLng(Double.parseDouble(us.getLati()), Double.parseDouble(us.getLongti())));
-                            mMaker = mMap.addMarker(markerOptions);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                }
-        );
-    }
-
     @Override
     public void onMyLocationChange(Location location) {
 //        showCircleToGoogleMap(getMyLocation(), 3);
 
-        updateLatLngToFirebase(location);
-        getLatLngToMark();
-
+//        updateLatLngToFirebase(location);
+//        getLatLngToMark();
     }
+
+
 }

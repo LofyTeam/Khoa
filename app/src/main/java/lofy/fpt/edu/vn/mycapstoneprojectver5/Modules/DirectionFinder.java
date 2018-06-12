@@ -25,6 +25,7 @@ import lofy.fpt.edu.vn.mycapstoneprojectver5.Entities.Route;
 
 public class DirectionFinder {
     private static final String DIRECTION_URL_API = "https://maps.googleapis.com/maps/api/directions/json?";
+    private static final String DIRECTION_URL_API2 = "https://maps.googleapis.com/maps/api/directions/json?origin=21.028511,105.804817&destination=10.762622,106.660172&sensor=false&alternatives=true&mode=driving";
     private static final String GOOGLE_API_KEY = "AIzaSyDnwLF2-WfK8cVZt9OoDYJ9Y8kspXhEHfI";
     // AIzaSyBWt3v_-HzFXoTZgl657u9_-s5rr-MD3is
     private DirectionFinderListener listener;
@@ -46,7 +47,8 @@ public class DirectionFinder {
         String urlOrigin = URLEncoder.encode(origin, "utf-8");
         String urlDestination = URLEncoder.encode(destination, "utf-8");
 
-        return DIRECTION_URL_API + "origin=" + urlOrigin + "&destination=" + urlDestination + "&key=" + GOOGLE_API_KEY;
+        return DIRECTION_URL_API + "origin=" + urlOrigin + "&destination=" + urlDestination + "&sensor=false&alternatives=true&mode=driving";
+//        return DIRECTION_URL_API;
     }
 
     private class DownloadRawData extends AsyncTask<String, Void, String> {
