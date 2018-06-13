@@ -145,8 +145,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 String des = tvSeach.getText().toString();
                 try {
                     findPath(ori, des);
-                }catch (Exception e){
-                    Toast.makeText(this, "ERROR: " , Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(this, "ERROR: ", Toast.LENGTH_LONG).show();
                 }
                 String gDis = "" + (new DecimalFormat("#.##").format((getDistance(getLocationFromAddress
                         (this, ori), getLocationFromAddress(this, des)) / 1000))) + " Km";
@@ -181,6 +181,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onDirectionFinderStart() {
         progressDialog = ProgressDialog.show(this, "Please wait.",
                 "Finding direction..!", true);
+        progressDialog.dismiss();
 
         if (originMarkers != null) {
             for (Marker marker : originMarkers) {
@@ -218,9 +219,31 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.end_green))
                     .title(route.endAddress)
                     .position(route.endLocation)));
+
             PolylineOptions polylineOptions = new PolylineOptions().
                     geodesic(true).
                     color(Color.BLUE).
+                    width(10);
+            for (int i = 0; i < route.points.size(); i++)
+                polylineOptions.add(route.points.get(i));
+            polylinePaths.add(mMap.addPolyline(polylineOptions));
+        }
+    }
+
+    @Override
+    public void onDirectionFinderSuccessGray(List<Route> routes) {
+        progressDialog.dismiss();
+        polylinePaths = new ArrayList<>();
+        originMarkers = new ArrayList<>();
+        destinationMarkers = new ArrayList<>();
+
+        for (Route route : routes) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+            tvDuration.setText(route.duration.text);
+            tvDistance.setText(route.distance.text);
+            PolylineOptions polylineOptions = new PolylineOptions().
+                    geodesic(true).
+                    color(Color.GRAY).
                     width(10);
             for (int i = 0; i < route.points.size(); i++)
                 polylineOptions.add(route.points.get(i));
@@ -250,7 +273,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     // find path of 2 location
     private void findPath(String ori, String des) {
         try {
+            new DirectionFinder(this, ori, des).executeGrey();
             new DirectionFinder(this, ori, des).execute();
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -261,8 +286,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         tvSeach = (TextView) findViewById(R.id.tv_main_search);
         btnFindPath = (Button) findViewById(R.id.btn_main_findPath);
         tvSeach.setOnClickListener(this);
-        tvDistance =(TextView) findViewById(R.id.tv_main_distance);
-        tvDuration = (TextView)findViewById(R.id.tv_main_duration);
+        tvDistance = (TextView) findViewById(R.id.tv_main_distance);
+        tvDuration = (TextView) findViewById(R.id.tv_main_duration);
         btnFindPath.setOnClickListener(this);
         btnFindPath.setEnabled(isBtnFindPathVisible);
     }
@@ -325,6 +350,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         DatabaseReference newRef = myRef.child(keyId);
         newRef.setValue(user);
     }
+
     public void updateLatLngToFirebase(Location location) {
         // Write a message to the database
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -333,6 +359,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         DatabaseReference newRef = myRef.child(keyId);
         newRef.setValue(user);
     }
+
     public void getLatLngToMark() {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         //usersList =null;

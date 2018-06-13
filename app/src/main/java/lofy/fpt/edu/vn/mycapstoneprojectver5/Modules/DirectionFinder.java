@@ -43,7 +43,20 @@ public class DirectionFinder {
         new DownloadRawData().execute(createUrl());
     }
 
+    public void executeGrey() throws UnsupportedEncodingException {
+        listener.onDirectionFinderStart();
+        new DownloadRawDataGray().execute(createUrlGrey());
+    }
+
     private String createUrl() throws UnsupportedEncodingException {
+        String urlOrigin = URLEncoder.encode(origin, "utf-8");
+        String urlDestination = URLEncoder.encode(destination, "utf-8");
+
+        return DIRECTION_URL_API + "origin=" + urlOrigin + "&destination=" + urlDestination + "&sensor=false&mode=driving";
+//        return DIRECTION_URL_API;
+    }
+
+    private String createUrlGrey() throws UnsupportedEncodingException {
         String urlOrigin = URLEncoder.encode(origin, "utf-8");
         String urlDestination = URLEncoder.encode(destination, "utf-8");
 
@@ -87,6 +100,42 @@ public class DirectionFinder {
         }
     }
 
+    private class DownloadRawDataGray extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String link = params[0];
+            try {
+                URL url = new URL(link);
+                InputStream is = url.openConnection().getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line + "\n");
+                }
+
+                return buffer.toString();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            try {
+                parseJSonGray(res);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void parseJSon(String data) throws JSONException {
         if (data == null)
             return;
@@ -118,6 +167,39 @@ public class DirectionFinder {
         }
 
         listener.onDirectionFinderSuccess(routes);
+    }
+
+    private void parseJSonGray(String data) throws JSONException {
+        if (data == null)
+            return;
+
+        List<Route> routes = new ArrayList<Route>();
+        JSONObject jsonData = new JSONObject(data);
+        JSONArray jsonRoutes = jsonData.getJSONArray("routes");
+        for (int i = 0; i < jsonRoutes.length(); i++) {
+            JSONObject jsonRoute = jsonRoutes.getJSONObject(i);
+            Route route = new Route();
+
+            JSONObject overview_polylineJson = jsonRoute.getJSONObject("overview_polyline");
+            JSONArray jsonLegs = jsonRoute.getJSONArray("legs");
+            JSONObject jsonLeg = jsonLegs.getJSONObject(0);
+            JSONObject jsonDistance = jsonLeg.getJSONObject("distance");
+            JSONObject jsonDuration = jsonLeg.getJSONObject("duration");
+            JSONObject jsonEndLocation = jsonLeg.getJSONObject("end_location");
+            JSONObject jsonStartLocation = jsonLeg.getJSONObject("start_location");
+
+            route.distance = new Distance(jsonDistance.getString("text"), jsonDistance.getInt("value"));
+            route.duration = new Duration(jsonDuration.getString("text"), jsonDuration.getInt("value"));
+            route.endAddress = jsonLeg.getString("end_address");
+            route.startAddress = jsonLeg.getString("start_address");
+            route.startLocation = new LatLng(jsonStartLocation.getDouble("lat"), jsonStartLocation.getDouble("lng"));
+            route.endLocation = new LatLng(jsonEndLocation.getDouble("lat"), jsonEndLocation.getDouble("lng"));
+            route.points = decodePolyLine(overview_polylineJson.getString("points"));
+
+            routes.add(route);
+        }
+
+        listener.onDirectionFinderSuccessGray(routes);
     }
 
     private List<LatLng> decodePolyLine(final String poly) {
