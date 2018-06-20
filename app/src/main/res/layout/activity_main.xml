@@ -1,27 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Controller.MainActivity">
+    tools:context=".controller.MainActivity">
 
-    <TextView
-        android:id="@+id/tv_main_search"
+    <AutoCompleteTextView
+        android:id="@+id/ac_mainActivity_search"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_margin="1dp"
         android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:background="@drawable/boder_textview"
         android:gravity="center"
         android:hint="Tìm kiếm ở đây"
         android:textColor="#000000"
         android:textSize="15sp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        >
+
+        <Button
+            android:id="@+id/btn_main_nearby_hopistals"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/TF_location"
+            android:onClick="onClick"
+            android:text="Hospitals" />
+
+        <Button
+            android:id="@+id/btn_main_nearby_gasStation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_below="@+id/TF_location"
+            android:layout_toEndOf="@+id/B_hopistals"
+            android:onClick="onClick"
+            android:text="Gas_Station" />
+
+        <Button
+            android:id="@+id/btn_main_nearby_restaurants"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_below="@+id/TF_location"
+            android:layout_toEndOf="@+id/B_schools"
+            android:onClick="onClick"
+            android:text="Restautants" />
+
+
+    </LinearLayout>
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -70,5 +111,4 @@
             android:layout_marginLeft="5dp"
             android:text="0 min" />
     </LinearLayout>
-
 </LinearLayout>

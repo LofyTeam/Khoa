@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="circleColorFill">#BFD8FD</color>
-    <color name="circleColorStroke">#578EE0</color>
+    <color name="circleColorStroke">#FF4081</color>
+    <!--<color name="circleColorStroke">#578EE0</color>-->
 </resources>

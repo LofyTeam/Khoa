@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">MyCapstoneProjectVer5</string>
-    <string name="title_activity_main">Ver_5</string>
+    <string name="app_name">Lofy_Version1.0.6</string>
+    <string name="title_activity_main">Ver1.0.6</string>
+    <string name="title_activity_main2">Map</string>
 </resources>
